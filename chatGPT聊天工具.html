@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+        }
+
+        .box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* background-color: pink; */
+        }
+
+        .left {
+            position: relative;
+            float: left;
+            width: 15%;
+            height: 100%;
+            background-color: rgb(47, 38, 38);
+        }
+
+        .project {
+            width: 90%;
+            height: 90px;
+            line-height: 90px;
+            margin: 10px auto;
+            letter-spacing: 10px;
+            text-align: center;
+            white-space: nowrap;
+            font-weight: bold;
+            border-radius: 10px;
+            background-color: #3A3535;
+        }
+
+        .attention {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            width: 90%;
+            height: 400px;
+            margin-left: -45%;
+            border-radius: 10px;
+            color: #ccc;
+            background-color: #3A3535;
+        }
+
+        .right {
+            float: left;
+            width: 85%;
+            height: 100%;
+        }
+
+        .right_top {
+            height: 90%;
+            width: 100%;
+            overflow-y: scroll;
+            background-color: #fff;
+        }
+
+        .right_bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            height: 10%;
+            width: 100%;
+            background-color: #ccc;
+        }
+
+        .bottom_box {
+            display: inline-block;
+            /* border: 1px solid black; */
+        }
+
+        .right_bottom .input {
+            vertical-align: middle;
+            width: 700px;
+            height: 60px;
+            font-size: 25px;
+            border-radius: 10px;
+            border: 2px solid #ccc
+        }
+
+        .right_bottom .btn {
+            vertical-align: middle;
+            width: 80px;
+            height: 60px;
+            border-radius: 10px;
+        }
+
+        .person {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-right: 40px;
+            padding-left: 100px;
+            word-break: break-all;
+            text-align: right;
+        }
+
+        .ai,
+        .wait {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-right: 100px;
+            padding-left: 40px;
+            word-break: break-all;
+            text-align: left;
+            background-color: #ccc;
+        }
+
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3); */
+            border-radius: 8px;
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0);
+            /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5); */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="left">
+            <div class="project">👉<a href="https://github.com/hellowws/ChatGPT" style="color:#ccc">开源项目</a>👈</div>
+            <div class="attention">
+                注意事项：
+                平台有时候访问流量过大，可能导致
+                回复慢一些，特别是比较大的回复，
+                可以多次输入问题来得到回复。
+
+            </div>
+        </div>
+        <div class="right">
+            <div class="right_top">
+                <!-- <div class="person">测试人1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
+                <div class="ai">测试机器1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div> -->
+            </div>
+            <div class="right_bottom">
+                <div class="bottom_box">
+                    <input class="input" type="text"> <input class="btn" type="button" value="发送">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let dialog = document.querySelector('.right_top')
+        let btn = document.querySelector('.btn')
+        let input = document.querySelector('.input')
+        let text = ''
+
+        function chatgpt(text) {
+            // 原先版本
+            // "https://v1.apigpt.cn/?q=" + text + "&apitype=sql"
+            // 更新版本
+            // "https://api.wqwlkj.cn/wqwlapi/chatgpt.php?msg="+text+"&type=json"
+            return axios.get("https://v1.apigpt.cn/?q=" + text + "&apitype=sql")
+                .then(res => {
+                    return res.data;
+                })
+                .catch(err => {
+                    return err.toString();
+                })
+        }
+
+
+        function toEvent() {
+
+            text = input.value
+            //清除input内的内容
+            input.value = ''
+            let persondialog = document.createElement('div')
+            persondialog.className = 'person animated slideInRight'
+            persondialog.innerText = text
+            dialog.appendChild(persondialog)
+
+            //等待中样式
+            let aidialog = document.createElement('div')
+            aidialog.className = 'wait'
+            aidialog.innerText = '等待一下，马上就好。'
+            dialog.appendChild(aidialog)
+
+            //调用demo
+            // 这里可能会出现异常，因为服务器问题。
+            chatgpt(text).then(res => {
+                // console.log(res)
+                res.ChatGPT_Answer = res.ChatGPT_Answer.replace(/[\n]/g, "")
+                let result = res.ChatGPT_Answer
+                aidialog.className = 'ai animated slideInLeft'
+                aidialog.innerText = result
+            }).catch(err => {
+                aidialog.innerText = '出现异常'
+                console.log(err)
+            })
+        }
+
+        btn.addEventListener('click', toEvent)
+        input.addEventListener('keydown', (event) => {
+            if (event.code === 'Enter') {
+                toEvent()
+            }
+        })
+
+
+
+        //禁止用户缩放界面
+        document.addEventListener('mousewheel', function (e) {
+            e = e || window.event;
+            if ((e.wheelDelta && event.ctrlKey) || e.detail) {
+                event.preventDefault();
+            }
+        }, {
+            capture: false,
+            passive: false
+        });
+        document.addEventListener('keydown', function (event) {
+            if ((event.ctrlKey === true || event.metaKey === true)
+                && (event.keyCode === 61 || event.keyCode === 107
+                    || event.keyCode === 173 || event.keyCode === 109
+                    || event.keyCode === 187 || event.keyCode === 189)) {
+                event.preventDefault();
+            }
+        }, false);
+    </script>
+</body>
+
+</html>
