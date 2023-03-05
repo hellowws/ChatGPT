@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.css" rel="stylesheet">
     <style>
@@ -18,14 +16,15 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            /* background-color: pink; */
+            background-color: pink;
+            display: flex;
         }
 
         .left {
             position: relative;
-            float: left;
-            width: 15%;
             height: 100%;
+            width: 200px;
+            flex: 0.3;
             background-color: rgb(47, 38, 38);
         }
 
@@ -55,12 +54,14 @@
         }
 
         .right {
-            float: left;
-            width: 85%;
+            display: flex;
+            flex: 1;
+            position: relative;
             height: 100%;
         }
 
         .right_top {
+            flex: 1.5;
             height: 90%;
             width: 100%;
             overflow-y: scroll;
@@ -70,33 +71,58 @@
         .right_bottom {
             display: flex;
             justify-content: center;
+            justify-content: space-around;
             align-items: center;
-            position: fixed;
+            position: absolute;
             bottom: 0;
-            height: 10%;
             width: 100%;
+            height: 10%;
+            flex: 1;
             background-color: #ccc;
         }
-
-        .bottom_box {
-            display: inline-block;
-            /* border: 1px solid black; */
+                
+        .right_bottom .clear {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: lightgray;
+            transition: all 0.5s;
+            cursor: pointer;
         }
+        .right_bottom .clear:active {
+            transform: rotate(360deg);
+        }
+
 
         .right_bottom .input {
             vertical-align: middle;
-            width: 700px;
+            flex: 0.8;
             height: 60px;
+            padding: 0 10px;
             font-size: 25px;
             border-radius: 10px;
-            border: 2px solid #ccc
+            border: 2px solid #fff
         }
 
         .right_bottom .btn {
             vertical-align: middle;
-            width: 80px;
+            flex: 0.1;
             height: 60px;
+            min-height: 30px;
+            min-width: 120px;
+            color: #fff;
+            font-size: 20px;
             border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0px 0px 2px 2px #fff;
+            background-color: #0094d9;
+        }
+
+        .btn:active {
+            transition: all 0.4s;
+            background-color: #066c9b;
         }
 
         .person {
@@ -118,24 +144,6 @@
             text-align: left;
             background-color: #ccc;
         }
-
-        /* 设置滚动条的样式 */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        /* 滚动槽 */
-        ::-webkit-scrollbar-track {
-            /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3); */
-            border-radius: 8px;
-        }
-
-        /* 滚动条滑块 */
-        ::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0);
-            /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5); */
-        }
     </style>
 </head>
 
@@ -145,21 +153,18 @@
             <div class="project">👉<a href="https://github.com/hellowws/ChatGPT" style="color:#ccc">开源项目</a>👈</div>
             <div class="attention">
                 注意事项：
-                平台有时候访问流量过大，可能导致
-                回复慢一些，特别是比较大的回复，
+                平台有时候访问流量过大，可能导致回复慢一些，特别是比较大的回复，
                 可以多次输入问题来得到回复。
-
             </div>
         </div>
         <div class="right">
             <div class="right_top">
-                <!-- <div class="person">测试人1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
-                <div class="ai">测试机器1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div> -->
+                <!-- <div class="person"></div>
+                <div class="ai"></div> -->
             </div>
             <div class="right_bottom">
-                <div class="bottom_box">
-                    <input class="input" type="text"> <input class="btn" type="button" value="发送">
-                </div>
+                <img class="clear" src="https://doing.asia/wp-content/uploads/2023/03/ava_clear.png"> <input
+                    class="input" type="text"> <input class="btn" type="button" value="发送">
             </div>
         </div>
     </div>
@@ -168,7 +173,18 @@
         let dialog = document.querySelector('.right_top')
         let btn = document.querySelector('.btn')
         let input = document.querySelector('.input')
+        let clear = document. querySelector('.clear')
         let text = ''
+
+        clear.addEventListener('click',function(){
+            let isClear = confirm('清除')
+            if(isClear){
+                while(dialog.firstChild){
+                    dialog.removeChild(dialog.firstChild)
+                }
+            }
+        })
+
 
         function chatgpt(text) {
             // 原先版本
@@ -186,7 +202,6 @@
 
 
         function toEvent() {
-
             text = input.value
             //清除input内的内容
             input.value = ''
@@ -215,6 +230,9 @@
             })
         }
 
+
+
+
         btn.addEventListener('click', toEvent)
         input.addEventListener('keydown', (event) => {
             if (event.code === 'Enter') {
@@ -222,27 +240,7 @@
             }
         })
 
-
-
-        //禁止用户缩放界面
-        document.addEventListener('mousewheel', function (e) {
-            e = e || window.event;
-            if ((e.wheelDelta && event.ctrlKey) || e.detail) {
-                event.preventDefault();
-            }
-        }, {
-            capture: false,
-            passive: false
-        });
-        document.addEventListener('keydown', function (event) {
-            if ((event.ctrlKey === true || event.metaKey === true)
-                && (event.keyCode === 61 || event.keyCode === 107
-                    || event.keyCode === 173 || event.keyCode === 109
-                    || event.keyCode === 187 || event.keyCode === 189)) {
-                event.preventDefault();
-            }
-        }, false);
     </script>
 </body>
 
-</html>
+</html>￿￿
